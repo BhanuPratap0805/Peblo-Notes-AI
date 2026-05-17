@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Peblo AI Notes
 
-## Getting Started
+Peblo AI Notes is a visually stunning, dual-themed note-taking application powered by Next.js and Artificial Intelligence. It was built as a submission for the Full Stack Developer Challenge.
 
-First, run the development server:
+It provides a rich notes workspace with intelligent auto-saving, seamless tag organization, sophisticated searching capabilities, and an integrated "AI Co-Pilot" for text summarization, action-item extraction, and smart title generation.
 
+## Features
+
+- **Robust Authentication:** Secure custom JWT-based stateless authentication using HTTP-Only cookies with `bcryptjs` password hashing.
+- **Dual Themes:** Toggle flawlessly between two entirely distinct visual modes:
+  - **Doodle Workshop:** A playful, light, hand-drawn aesthetic using `Kalam` and `Permanent Marker` fonts.
+  - **Retro Arcade:** A high-contrast, cyberpunk dark mode with pixelated borders, glowing text, and strict monospace typing.
+- **AI Co-Pilot:** Instant, streaming AI assistance using Gemini 2.5 Flash to summarize notes, extract actions, and suggest titles.
+- **Intelligent Organization:** Add custom tags, archive old notes, and seamlessly perform case-insensitive partial searches across note titles, contents, and tags.
+- **Auto-Save:** Notes automatically save as you type, with visual cues to ensure you never lose data.
+- **Productivity Insights:** A dashboard visualizing your total notes, recently active notes, AI usage, and most frequent tags.
+- **Public Sharing:** Generate public, read-only URLs to securely share specific notes without requiring the viewer to log in.
+
+## System Architecture
+
+The application is built around a modern Next.js 15+ architecture prioritizing speed, developer experience, and UX:
+
+- **Frontend:** Next.js (App Router), React 19, and `lucide-react`. Styling is achieved via a hybrid approach using TailwindCSS for layout geometry and a custom `globals.css` dual-theme methodology for heavy aesthetic overrides (ensuring no CSS hydration conflicts).
+- **Backend APIs:** Next.js Route Handlers (`app/api/*`) provide RESTful endpoints for Notes CRUD and Authentication. Route protections are handled natively via Next.js Middleware.
+- **Database:** PostgreSQL.
+- **ORM & Data Layer:** Prisma Client integrated with `@prisma/adapter-pg` for optimal connection pooling and fast queries.
+- **AI Streaming:** `@google/genai` logic providing Server-Sent Events (SSE) back to the client for immediate generative text rendering.
+- **State Management:** Complex component state (like debounced API calls and optimistic UI updates for tags/archiving) are managed natively via React Hooks (`useState`, `useCallback`, `useEffect`).
+
+## Setup Instructions
+
+### 1. Prerequisites
+- Node.js (v18 or higher)
+- PostgreSQL (Local or remote, e.g., Supabase/Neon)
+
+### 2. Installation
+Clone the repository and install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd peblo-notes
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Configuration
+Create a `.env` file in the root directory and populate it with the required keys (see `.env.example`):
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/peblonotes"
+JWT_SECRET="super-secret-key-for-jwt-signing"
+JWT_EXPIRES_IN="7d"
+GEMINI_API_KEY="your-gemini-api-key"
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Database Setup
+Push the Prisma schema to your PostgreSQL database:
+```bash
+npx prisma db push
+```
+*(Optional: If you wish to seed dummy data, you can build a seed script, though the app works beautifully starting fresh!)*
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Running the Application
+Start the Next.js development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Submission Notes
 
-To learn more about Next.js, take a look at the following resources:
+- **Archive Feature:** The archive toggle logic is fully operational from both the individual note editor and the main dashboard.
+- **Hydration & Themes:** Implemented a `mounted` state safeguard to prevent the dreaded Next.js hydration flash between light and dark modes on initial page load.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Developed for the Full Stack Developer Challenge.*

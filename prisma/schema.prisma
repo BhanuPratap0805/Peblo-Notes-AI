@@ -1,0 +1,39 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  password     String?
+  authProvider String   @default("credentials")
+  notes        Note[]
+  createdAt    DateTime @default(now())
+}
+
+model Note {
+  id           String   @id @default(cuid())
+  title        String   @default("Untitled")
+  content      String   @default("") @db.Text
+  tags         String[]
+  isArchived   Boolean  @default(false)
+  isPublic     Boolean  @default(false)
+  shareId      String?  @unique
+  aiSummary    String?  @db.Text
+  aiItems      String[]
+  aiTitle      String?
+  aiUsageCount Int      @default(0)
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+
+  @@index([userId, updatedAt(sort: Desc)])
+  @@index([shareId])
+}
