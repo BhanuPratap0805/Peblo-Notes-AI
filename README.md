@@ -1,5 +1,7 @@
 # Peblo AI Notes
 
+🚀 **Live Demo:** [https://peblo-notes-ai-7vz5.vercel.app/](https://peblo-notes-ai-7vz5.vercel.app/)
+
 Peblo AI Notes is a visually stunning, dual-themed note-taking application powered by Next.js and Artificial Intelligence. It was built as a submission for the Full Stack Developer Challenge.
 
 It provides a rich notes workspace with intelligent auto-saving, seamless tag organization, sophisticated searching capabilities, and an integrated "AI Co-Pilot" for text summarization, action-item extraction, and smart title generation.
