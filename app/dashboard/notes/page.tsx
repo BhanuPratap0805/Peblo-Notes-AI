@@ -69,6 +69,19 @@ export default function NotesPage() {
     } catch { /* noop */ }
   }
 
+  const handleArchiveToggle = async (e: React.MouseEvent, id: string, currentState: boolean) => {
+    e.preventDefault()
+    try {
+      await fetch(`/api/notes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isArchived: !currentState })
+      })
+      // Remove it from the current view since its state changed
+      setNotes(notes.filter((n) => n.id !== id))
+    } catch { /* noop */ }
+  }
+
   const isLight = mounted && (theme === 'light' || resolvedTheme === 'light')
   
   if (!mounted) return null;
